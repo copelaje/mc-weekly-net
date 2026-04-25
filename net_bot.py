@@ -83,14 +83,14 @@ def fetch_messages(base_url, channel):
         log.warning("Fetch error: %s", e)
         return []
 
-def post_meshcore_message(base_url, channel, text):
-    url = build_messages_url(base_url, channel)
+def post_meshcore_message(relay_url, relay_token, group, text):
+    headers = {"Authorization": f"Bearer {relay_token}"}
     try:
-        resp = requests.post(url, json={"text": text}, timeout=10)
-        log.info("Meshcore POST %s -> %d %s", url, resp.status_code, resp.text[:200])
+        resp = requests.post(relay_url, json={"text": text, "group": group}, headers=headers, timeout=10)
+        log.info("Relay POST -> %d", resp.status_code)
         resp.raise_for_status()
     except Exception as e:
-        log.warning("Meshcore send error: %s", e)
+        log.warning("Meshcore relay error: %s", e)
 
 # ---------------------------------------------------------------------------
 # Discord
@@ -178,8 +178,9 @@ def start_net(state: NetState, cfg: dict, seen_packets: set):
 
     if cfg["meshcore"]["enabled"]:
         post_meshcore_message(
-            cfg["corescope"]["base_url"],
-            cfg["meshcore"]["channel"],
+            cfg["meshcore"]["relay_url"],
+            cfg["meshcore"]["relay_token"],
+            cfg["meshcore"]["group"],
             net_cfg["start_message"],
         )
 
@@ -194,8 +195,9 @@ def end_net(state: NetState, cfg: dict):
 
     if cfg["meshcore"]["enabled"]:
         post_meshcore_message(
-            cfg["corescope"]["base_url"],
-            cfg["meshcore"]["channel"],
+            cfg["meshcore"]["relay_url"],
+            cfg["meshcore"]["relay_token"],
+            cfg["meshcore"]["group"],
             summary,
         )
 
