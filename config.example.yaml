@@ -1,0 +1,25 @@
+corescope:
+  base_url: "https://YOUR_CORESCOPE_DOMAIN/api/channels"
+  channel: "#weekly-net"       # channel to read messages from
+  poll_interval_seconds: 15
+
+discord:
+  checkin_webhook: ""               # webhook for relaying each check-in message
+  announce_webhook: ""              # webhook for start/end announcements (can be same URL)
+
+meshcore:
+  enabled: false                    # set true to also broadcast start/end on meshcore
+  channel: "#mc-weekly-net"         # channel to POST announcements to (can differ from read channel)
+
+schedule:
+  timezone: "America/New_York"      # pytz timezone string, e.g. America/New_York
+  day_of_week: "fri"                # mon tue wed thu fri sat sun
+  start_time: "17:00"               # 24h, local time
+  end_time: "23:59"                 # 24h, local time
+
+net:
+  name: "Weekly Net"
+  start_message: "📡 Weekly net is now OPEN through midnight. Check in with: YourCallsign - City, State"
+  end_message_template: "Weekly net is now CLOSED. {count} station(s) checked in. Thanks all!"
+  checkin_pattern: "^(.+?)\\s*-\\s*(.+)$"   # Name - City, State (flexible spacing)
+  require_pattern_match: false               # false = relay any message; true = only pattern matches
