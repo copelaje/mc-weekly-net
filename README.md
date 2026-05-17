@@ -112,11 +112,17 @@ Put the output in both `config.yaml` (`meshcore.relay_token`) and the `.env` fil
 
 Only needed when running the relay container (Options B and C).
 
+```bash
+cp env.example .env
 ```
-RELAY_TOKEN=<token from step 3>
-COMPANION_HOST=<IP address of your MeshCore companion>
-COMPANION_PORT=4403
-```
+
+Edit `.env` and fill in the values:
+
+| Variable | Description |
+|---|---|
+| `RELAY_TOKEN` | Shared secret from step 3 — must match `meshcore.relay_token` in `config.yaml` |
+| `COMPANION_HOST` | IP address or hostname of the MeshCore companion device |
+| `COMPANION_PORT` | TCP port the companion listens on (default `4403`) |
 
 ---
 

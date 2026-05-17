@@ -12,6 +12,8 @@ meshcore:
   relay_url: "http://relay:8080/send"   # URL of the relay service (Docker service name resolves internally)
   relay_token: ""                  # must match RELAY_TOKEN env var on the relay container
   group: ""                        # channel name as configured on the companion device
+  ignore_senders:
+    - "MeshcoreNetBot"             # messages from these senders are never relayed to Discord
 
 schedule:
   timezone: "America/New_York"      # pytz timezone string, e.g. America/New_York

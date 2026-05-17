@@ -1,4 +1,5 @@
 .claude/
 config.yaml
+.env
 data/
-
+*.swp

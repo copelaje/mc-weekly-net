@@ -213,6 +213,7 @@ def process_messages(messages, state: NetState, cfg: dict, seen_packets: set):
     discord_cfg = cfg["discord"]
     pattern = re.compile(net_cfg["checkin_pattern"], re.IGNORECASE)
     require_match = net_cfg.get("require_pattern_match", False)
+    ignore_senders = {s.lower() for s in cfg["meshcore"].get("ignore_senders", [])}
 
     for msg in messages:
         packet_hash = msg.get("packetHash")
@@ -221,6 +222,11 @@ def process_messages(messages, state: NetState, cfg: dict, seen_packets: set):
 
         sender = msg.get("sender", "Unknown")
         text = (msg.get("text") or "").strip()
+
+        if sender.lower() in ignore_senders:
+            seen_packets.add(packet_hash)
+            save_seen(packet_hash)
+            continue
 
         if not text or text == "P":
             seen_packets.add(packet_hash)
